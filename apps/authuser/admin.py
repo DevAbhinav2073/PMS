@@ -34,3 +34,11 @@ class StudnetAdmin(UserAdmin):
 
 
 admin.site.register(StudentProxyModel, StudnetAdmin)
+
+
+
+admin.site.site_header = 'Elective Priority Management System'
+admin.site.site_title = 'EPMS Admin'
+admin.site.site_url = 'https://epms.abhinavdev.com.np/'
+admin.site.index_title = 'Elective Priority Management System'
+admin.empty_value_display = '----'
