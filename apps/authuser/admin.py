@@ -11,17 +11,17 @@ class StudnetAdmin(UserAdmin):
     add_form = NewStudentCreateForm
     form = StudentChangeForm
     search_fields = ('first_name', 'last_name', 'username', 'email', 'roll_number')
-    list_display = ('first_name', 'last_name', 'username', 'email', 'roll_number', 'stream')
+    list_display = ('first_name', 'last_name', 'username', 'email', 'roll_number', 'batch', 'stream')
     list_filter = ()
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'stream', 'roll_number')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'batch', 'stream', 'roll_number')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
             'fields': (
-                'first_name', 'last_name', 'email', 'roll_number', 'username', 'stream',),
+                'first_name', 'last_name', 'email', 'roll_number', 'username', 'batch', 'stream',),
         }),
     )
     prepopulated_fields = {'username': ('roll_number',)}
@@ -34,8 +34,6 @@ class StudnetAdmin(UserAdmin):
 
 
 admin.site.register(StudentProxyModel, StudnetAdmin)
-
-
 
 admin.site.site_header = 'Elective Priority Management System'
 admin.site.site_title = 'EPMS Admin'

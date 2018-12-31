@@ -7,8 +7,6 @@ email_body_template = 'Hello %s, we have created your account at Elective Priori
 
 
 def send_account_creation_email(user_data, password):
-    import pdb
-    pdb.set_trace()
     first_name = user_data.get('first_name')
     last_name = user_data.get('last_name')
     username = user_data.get('username')
@@ -18,4 +16,5 @@ def send_account_creation_email(user_data, password):
     title = 'Account created at Elective Priority Management System'
     email_body = email_body_template % (first_name, username, password, settings.WEBSITE_LINK)
     email = EmailMessage(title, email_body, to=[user_email, ])
-    email.send()
+    print(email_body)
+    # email.send()

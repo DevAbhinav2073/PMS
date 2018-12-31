@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 
 # Create your models here.
-from apps.course.models import Stream
+from apps.course.models import Stream, Batch, AcademicLevel
 
 USER_TYPE_CHOICES = (
     ('Student', 'Student'),
@@ -19,6 +19,8 @@ class User(AbstractUser):
     stream = models.ForeignKey(Stream, null=True, blank=True, on_delete=models.PROTECT)
     roll_number = models.CharField(max_length=30)
     user_type = models.CharField(choices=USER_TYPE_CHOICES, max_length=30, default='Staff')
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    level = models.ForeignKey(AcademicLevel, on_delete=models.CASCADE)
 
 
 class StudentProxyModel(User):
@@ -31,3 +33,4 @@ class StudentProxyModel(User):
         proxy = True
         verbose_name = 'Student'
         verbose_name_plural = 'Students'
+
