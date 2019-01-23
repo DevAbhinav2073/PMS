@@ -33,6 +33,7 @@ class ElectiveSession(models.Model):
 
 class Stream(models.Model):
     stream_name = models.CharField(max_length=80)
+    level = models.ForeignKey(AcademicLevel, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.stream_name

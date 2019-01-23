@@ -17,7 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
 
+from apps.ajax_apis import get_faculty_according_to_level
+
 urlpatterns = [
     path('', RedirectView.as_view(url='login/')),
     path('login/', admin.site.urls),
+]
+
+urlpatterns += [
+    path('ajax/get-faculty-according-to-level/', get_faculty_according_to_level, name='get-faculty-according-to-level'),
+
 ]

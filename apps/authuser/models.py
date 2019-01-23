@@ -16,11 +16,15 @@ class StudentObjectsManager(UserManager):
 
 
 class User(AbstractUser):
+    name = models.CharField(max_length=80, default='')
     stream = models.ForeignKey(Stream, null=True, blank=True, on_delete=models.PROTECT)
-    roll_number = models.CharField(max_length=30)
-    user_type = models.CharField(choices=USER_TYPE_CHOICES, max_length=30, default='Staff')
-    batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
-    level = models.ForeignKey(AcademicLevel, on_delete=models.CASCADE)
+    roll_number = models.CharField(max_length=30, default='123')
+    user_type = models.CharField(choices=USER_TYPE_CHOICES, max_length=30, default='Student')
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE, default=1)
+    level = models.ForeignKey(AcademicLevel, on_delete=models.CASCADE, default=1)
+
+    def get_full_name(self):
+        return self.name
 
 
 class StudentProxyModel(User):
@@ -33,4 +37,3 @@ class StudentProxyModel(User):
         proxy = True
         verbose_name = 'Student'
         verbose_name_plural = 'Students'
-
