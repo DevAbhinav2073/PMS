@@ -26,9 +26,14 @@ class ElectiveSession(models.Model):
     level = models.ForeignKey(AcademicLevel, on_delete=models.CASCADE)
     semester = models.IntegerField()
     min_student = models.IntegerField(verbose_name='Minimum student for a subject')
+    subjects_provided = models.IntegerField(verbose_name='Subject provided to each student', )
 
     def __str__(self):
         return '%sth semester  of %s' % (self.semester, self.level)
+
+    class Meta:
+        verbose_name = 'Semester'
+        verbose_name_plural = 'Semesters'
 
 
 class Stream(models.Model):

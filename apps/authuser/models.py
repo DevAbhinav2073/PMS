@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 
 # Create your models here.
-from apps.course.models import Stream, Batch, AcademicLevel
+from apps.course.models import Stream, Batch, AcademicLevel, ElectiveSession
 
 USER_TYPE_CHOICES = (
     ('Student', 'Student'),
@@ -22,6 +22,7 @@ class User(AbstractUser):
     user_type = models.CharField(choices=USER_TYPE_CHOICES, max_length=30, default='Student')
     batch = models.ForeignKey(Batch, on_delete=models.CASCADE, default=1)
     level = models.ForeignKey(AcademicLevel, on_delete=models.CASCADE, default=1)
+    current_semester = models.ForeignKey(ElectiveSession, on_delete=models.DO_NOTHING, null=True)
 
     def get_full_name(self):
         return self.name

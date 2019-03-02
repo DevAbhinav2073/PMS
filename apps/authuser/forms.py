@@ -3,11 +3,12 @@ import random
 import string
 
 from django import forms
+from django.contrib.admin.helpers import ActionForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from apps.course.models import Stream, Batch, AcademicLevel
-from apps.student.models import StudentProxyModel
+from apps.course.models import Stream, Batch, AcademicLevel, ElectiveSubject, ElectiveSession
+from apps.student.models import StudentProxyModel, ElectivePriority
 from apps.system.email_sending_utils import send_account_creation_email
 
 User = get_user_model()
@@ -22,8 +23,8 @@ def pw_gen(size=8, chars=string.ascii_letters + string.digits + string.punctuati
 
 
 class NewStudentCreateForm(UserCreationForm):
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
     roll_number = forms.CharField(required=True)
     stream = forms.ModelChoiceField(queryset=Stream.objects.all())
 
@@ -70,3 +71,23 @@ class DetailsForUploadingCSVForm(forms.Form):
     batch = forms.ModelChoiceField(queryset=Batch.objects.all())
     faculty = forms.ModelChoiceField(queryset=Stream.objects.all())
     csv_file = forms.FileField(validators=[validate_file_extension], )
+
+
+class PriorityForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        self.parent_instance = kwargs.pop('parent_instance', None)
+        super().__init__(*args, **kwargs)
+        if self.parent_instance is not None:
+            current_session = self.parent_instance.current_semester
+            stream = self.parent_instance.stream
+            subjects = ElectiveSubject.objects.filter(elective_for=current_session, stream=stream)
+            self.fields['subject'].queryset = subjects
+
+    class Meta:
+        model = ElectivePriority
+        exclude = ()
+
+
+class StudentActionForm(ActionForm):
+    semester = forms.ModelChoiceField(ElectiveSession.objects.all(), required=False)
