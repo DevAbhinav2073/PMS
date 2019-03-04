@@ -8,3 +8,4 @@ class StreamForm(forms.Form):
     level = forms.ModelChoiceField(queryset=AcademicLevel.objects.all())
     stream = forms.ModelChoiceField(queryset=Stream.objects.all())
     semester = forms.ModelChoiceField(queryset=ElectiveSession.objects.all())
+

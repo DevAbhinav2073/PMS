@@ -12,10 +12,10 @@ class ElectivePriority(models.Model):
     subject = models.ForeignKey(ElectiveSubject, on_delete=models.CASCADE)
     priority = models.IntegerField(default=1, blank=True)
     student = models.ForeignKey(StudentProxyModel, on_delete=models.CASCADE, blank=True, null=True)
-    session = models.ForeignKey(ElectiveSession, on_delete=models.DO_NOTHING)
+    session = models.ForeignKey(ElectiveSession, verbose_name='Semester', on_delete=models.DO_NOTHING)
 
     class Meta:
-        unique_together = ('subject', 'priority', 'student')
+        unique_together = ('subject', 'session', 'priority', 'student')
         verbose_name = 'Priority'
         verbose_name_plural = 'Priorities'
 

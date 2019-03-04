@@ -3,72 +3,46 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
     <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-    &rsaquo; <a href="">{% trans 'Generate result' %}</a>
+    &rsaquo; <a href="">{% trans 'Enter priority ' %}</a>
 </div>
 {% endblock %}
 
 {% block content %}
-{% if not is_download %}
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
-    <button class="button" type="submit"> View priority result</button>
-    <!--<button class="button" type="submit" name="_get_pdf"> Get PDF</button>-->
-</form>
-{% endif %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-{% if has_data %}
-{% if is_data_entry_ok %}
-<table border="2px">
-    <tr>
-        <th>Subject Name</th>
-        <th>Student count</th>
-        <th>Roll number</th>
-        <th>Student name</th>
-    </tr>
-    {% for subject in result%}
-    <tr>
-        <td rowspan="{{subject.student_count}}" class="sub_name">
-            {{subject.subject_name}}
-        </td>
+    <button class="button" type="submit" name="_get_formset"> Enter Priorities</button>
+    <br>
+    {% if has_data %}
+    {% trans 'Here are the subjects for selected semester' %}
+    {% for subject in elective_subjects %}
+    <br>
+    {{forloop.counter}}) {{subject}}
+    {% endfor %}
+    <br>
+    {% trans 'Enter the priority selections by students separated by spaces ' %}
 
-        <td rowspan="{{subject.student_count}}">
-            {{subject.student_count}}
-        </td>
-        {% for student in subject.students %}
-        {% if forloop.counter == 1 %}
-        <td> {{student.roll_number}}</td>
-        <td> {{student.student_name}}</td>
-        {% endif %}
+
+    {{ formset.management_form }}
+
+
+    <table>
+        <thead>
+        {% for form in formset.forms %}
+        {{ form.non_field_errors }}
+        <table>
+            {{ form.as_table }}
+        </table>
         {% endfor %}
-    </tr>
-    {% for student in subject.students %}
-    {% if forloop.counter != 1 %}
-    <tr>
-        <td> {{student.roll_number}}</td>
-        <td> {{student.student_name}}</td>
-    </tr>
+        </tbody>
+    </table>
+
+    <button type="submit" class="button" name="_post_priorities"> Submit</button>
     {% endif %}
-    {% endfor %}
-    {% endfor %}
-</table>
-{% else %}
-{% trans 'Probable reasons for error:'%}
-<br>
-{% trans 'Available subjects for selected semester:'%} {{available_subject_count }}
-
-<ul>
-    {% for message in outlier_messages %}
-    <li>{{message}}</li>
-    {% endfor %}
-</ul>
-{% endif%}
-
-{% endif %}
-
-
+</form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-
 $("#id_level").click(function () {
         var academic_level_id = $(this).val();
         $.ajax({
@@ -86,9 +60,8 @@ $("#id_level").click(function () {
                 });
             }
     });
+});
 
-
-    });
 $("#id_level").click(function () {
         var academic_level_id = $(this).val();
         $.ajax({
@@ -118,6 +91,6 @@ $("#id_level").click(function () {
 
 
 
-</script>
 
+</script>
 {% endblock %}

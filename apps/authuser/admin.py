@@ -9,6 +9,7 @@ from django.db import IntegrityError
 from django.template.response import TemplateResponse
 from django.urls import path
 from django.utils.translation import gettext_lazy as _
+
 from apps.authuser.forms import NewStudentCreateForm, StudentChangeForm, DetailsForUploadingCSVForm, NAME_FIELD, \
     ROLL_NUMBER_FIELD, EMAIL_FIELD, PriorityForm, StudentActionForm
 from apps.authuser.formsets import PriorityFormSet
@@ -22,7 +23,7 @@ User = get_user_model()
 class PriorityInline(admin.TabularInline):
     model = ElectivePriority
     extra = 5
-    fields = ('subject',)
+    fields = ('subject', 'priority')
     form = PriorityForm
     formset = PriorityFormSet
 
@@ -47,7 +48,7 @@ class StudentAdmin(UserAdmin):
     actions = ['change_semester', ]
     action_form = StudentActionForm
     search_fields = ('name', 'username', 'email', 'roll_number')
-    list_display = ('name', 'username', 'email', 'roll_number', 'batch', 'stream', 'level')
+    list_display = ('name', 'roll_number', 'email', 'batch', 'stream', 'level')
     list_filter = ('batch', 'level', 'stream')
     change_list_template = 'admin/authuser/authuser_student_change_list.html'
     fieldsets = (

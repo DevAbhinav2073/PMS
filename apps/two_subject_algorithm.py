@@ -25,7 +25,7 @@ class TwoSubjectAlgorithm():
             self.priority_of[student.roll_number] = list(
                 ElectivePriority.objects.filter(student__roll_number=student.roll_number,
                                                 session=self.semester).order_by(
-                    'id').values_list('subject_id', flat=True))
+                    'priority').values_list('subject_id', flat=True))
 
     def display_question(self):
         '''displays students with their priorities'''

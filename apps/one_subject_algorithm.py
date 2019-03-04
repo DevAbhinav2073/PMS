@@ -25,7 +25,7 @@ class OneSubjectAlgorithm():
             # consider a student can pick self.subject_count subjects
             self.priority_of[i] = list(ElectivePriority.objects.filter(student__roll_number=i,
                                                                        session=self.semester).order_by(
-                'id').values_list('subject_id', flat=True))
+                'priority').values_list('subject_id', flat=True))
 
     def display_question(self):
         '''displays students with their priorities'''

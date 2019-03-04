@@ -56,3 +56,20 @@ def get_outliers_message(batch, stream, semester):
             incomplete_data_entry.append(message)
     outliers['Incomplete data entry'] = incomplete_data_entry
     return incomplete_data_entry
+
+
+def get_student_queryset(batch, stream):
+    return StudentProxyModel.objects.filter(batch=batch, stream=stream)
+
+
+def get_subjects(stream, semester):
+    return ElectiveSubject.objects.filter(elective_for=semester, stream=stream)
+
+
+def get_nth_object(queryset, n):
+    i = 0
+    for object in queryset:
+        if i == n:
+            return object
+        i += 1
+    return None
