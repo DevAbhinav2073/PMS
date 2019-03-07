@@ -24,9 +24,10 @@ def normalize_result(result):
         normalized_data['subject_name'] = get_object_or_404(ElectiveSubject, pk=subject_id).subject_name
         normalized_data['students'] = [{'student_name': student.name, 'roll_number': student.roll_number} for student in
                                        StudentProxyModel.objects.filter(roll_number__in=result[subject_id])]
-        normalized_data['student_count'] = StudentProxyModel.objects.filter(roll_number__in=result[subject_id]).count()
-        normalized_data['student_count_1'] = StudentProxyModel.objects.filter(
-            roll_number__in=result[subject_id]).count() + 1
+        student_count = StudentProxyModel.objects.filter(roll_number__in=result[subject_id]).count()
+        normalized_data['student_count'] = student_count
+        normalized_data['student_count_1'] = student_count + 1
+        normalized_data['row_count'] = 1 if student_count == 0 else student_count
         normalized_data_list.append(normalized_data)
     return normalized_data_list
 

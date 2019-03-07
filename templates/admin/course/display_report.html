@@ -28,11 +28,11 @@
     </tr>
     {% for subject in result%}
     <tr>
-        <td rowspan="{{subject.student_count}}" class="sub_name">
+        <td rowspan="{{subject.row_count}}" class="sub_name">
             {{subject.subject_name}}
         </td>
 
-        <td rowspan="{{subject.student_count}}">
+        <td rowspan="{{subject.row_count}}">
             {{subject.student_count}}
         </td>
         {% if subject.student_count == 0 %}
