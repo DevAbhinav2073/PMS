@@ -21,8 +21,8 @@
     {% endfor %}
     <br>
     {% trans 'Enter the priority selections by students separated by spaces ' %}
-
-
+    <p style="color:green"> {{message}}</p>
+    {% if not is_success %}
     {{ formset.management_form }}
 
 
@@ -38,6 +38,7 @@
     </table>
 
     <button type="submit" class="button" name="_post_priorities"> Submit</button>
+    {% endif %}
     {% endif %}
 </form>
 </div>
@@ -80,6 +81,8 @@ $("#id_level").click(function () {
             }
     });
     });
+
+
 
 
 

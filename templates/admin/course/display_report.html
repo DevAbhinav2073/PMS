@@ -35,6 +35,10 @@
         <td rowspan="{{subject.student_count}}">
             {{subject.student_count}}
         </td>
+        {% if subjects.student_count == 0 %}
+        <td></td>
+        <td></td>
+        {% endif %}
         {% for student in subject.students %}
         {% if forloop.counter == 1 %}
         <td> {{student.roll_number}}</td>
@@ -107,6 +111,8 @@ $("#id_level").click(function () {
             }
     });
     });
+
+
 
 
 

@@ -37,6 +37,8 @@ def enter_priority_in_bulk(request, *args, **kwargs):
             context['elective_subjects'] = subjects
             if formset.is_valid():
                 formset.save()
+                context['message'] = 'Data inserted successfully'
+                context['is_success'] = True
     context['form'] = form
     return TemplateResponse(
         request,
