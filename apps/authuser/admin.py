@@ -6,8 +6,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 from django.db import IntegrityError
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.urls import path
+from django.urls import path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from apps.authuser.forms import NewStudentCreateForm, StudentChangeForm, DetailsForUploadingCSVForm, NAME_FIELD, \
@@ -132,6 +133,7 @@ class StudentAdmin(UserAdmin):
                     faculty = form.cleaned_data.get('faculty')
                     csv_file = request.FILES['csv_file']
                     self.create_student_record_from_uploaded_csv(csv_file, academic_level, batch, faculty)
+                    return redirect(reverse('admin:authuser_studentproxymodel_changelist'))
                 except Exception as e:
                     self.message_user(request, 'Failure: ' + str(e), messages.ERROR)
 

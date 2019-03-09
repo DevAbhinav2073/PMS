@@ -19,7 +19,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=80, default='')
     stream = models.ForeignKey(Stream, null=True, blank=True, on_delete=models.PROTECT)
     roll_number = models.CharField(max_length=30, default='123')
-    user_type = models.CharField(choices=USER_TYPE_CHOICES, max_length=30, default='Student')
+    user_type = models.CharField(choices=USER_TYPE_CHOICES, max_length=30, default='Staff')
     batch = models.ForeignKey(Batch, on_delete=models.CASCADE, default=1)
     level = models.ForeignKey(AcademicLevel, on_delete=models.CASCADE, default=1)
     current_semester = models.ForeignKey(ElectiveSession, on_delete=models.DO_NOTHING, null=True)

@@ -2,6 +2,7 @@ from apps.student.models import ElectivePriority
 
 
 class OneSubjectAlgorithm():
+
     def __init__(self, students_queryset, semester, subjects=[]):
         # list of students and subjects. initially they are all notok.
         # student is ok_student if it gets any subject
@@ -13,11 +14,12 @@ class OneSubjectAlgorithm():
         self.subject_count = len(subjects)
         self.threshold = semester.subjects_provided
         self.semester = semester
-
         # self.priority_of is a dictionary of students with their priorities
         # self.solution is the main ans
         self.priority_of = {}
         self.solution = {i: set() for i in self.notok_subjects}
+
+        print( self.notok_students, subjects, self.threshold, self.notok_students, semester)
 
     def populate_data(self):
         # randomly giving priorities to students as for now

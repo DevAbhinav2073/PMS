@@ -70,7 +70,7 @@ notok_students = list(i for i in range(501, 549)) + list(i for i in range(501, 5
 ok_subjects = list()
 notok_subjects = ['nep', 'eng', 'math', 'soc', 'phy', 'bio', 'his', 'chem', 'geo', 'coa']
 
-threshold = 10
+threshold = 14
 
 priority_of = {}
 solution = {i: set() for i in notok_subjects}

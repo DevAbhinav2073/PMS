@@ -22,5 +22,5 @@ def create_student_account(sender, instance, created, *args, **kwargs):
 
 @receiver(pre_save, sender=ElectivePriority)
 def manage_priority_sememter(sender, instance, *args, **kwargs):
-
-    instance.session = instance.student.current_semester
+    if instance.student.current_semester is not  None:
+        instance.session = instance.student.current_semester

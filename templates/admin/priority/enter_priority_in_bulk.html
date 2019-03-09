@@ -20,7 +20,13 @@
     {{forloop.counter}}) {{subject}}
     {% endfor %}
     <br>
+    <h3>
+    {% if form_data.enter_from_text %}
     {% trans 'Enter the priority selections by students separated by spaces ' %}
+    {% else %}
+    {% trans 'Select the priority from the drop down' %}
+    {% endif %}
+    </h3>
     <p style="color:green"> {{message}}</p>
     {% if not is_success %}
     {{ formset.management_form }}
@@ -81,6 +87,8 @@ $("#id_level").click(function () {
             }
     });
     });
+
+
 
 
 

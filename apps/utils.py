@@ -74,3 +74,12 @@ def get_nth_object(queryset, n):
             return object
         i += 1
     return None
+
+
+def get_object_index(queryset, object):
+    i = 0
+    for obj in queryset:
+        if obj == object:
+            return i
+        i += 1
+    return None
