@@ -16,4 +16,4 @@ class ElectivePriorityAdmin(admin.ModelAdmin):
             return super().get_queryset(request).filter(student=request.user)
 
 
-admin.site.register(ElectivePriority, ElectivePriorityAdmin)
+# admin.site.register(ElectivePriority, ElectivePriorityAdmin)
