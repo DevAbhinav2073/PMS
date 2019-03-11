@@ -30,10 +30,9 @@
     <p style="color:green"> {{message}}</p>
     {% if not is_success %}
     {{ formset.management_form }}
-
-    {{ formset.non_form_errors.as_ul }}
     <table id="formset" class="form">
         {% for form in formset.forms %}
+        {{ form.non_field_errors }}
         {% if forloop.first %}
         <thead>
         <tr>
@@ -43,16 +42,20 @@
         </tr>
         </thead>
         {% endif %}
+
         <tr class="{% cycle row1 row2 %}">
+
             {% for field in form.visible_fields %}
             <td>
+
                 {# Include the hidden fields in the form #}
                 {% if forloop.first %}
+                {{ form.non_field_errors }}
                 {% for hidden in form.hidden_fields %}
                 {{ hidden }}
                 {% endfor %}
                 {% endif %}
-                {{ field.errors.as_ul }}
+                {{ field.errors }}
                 {{ field }}
             </td>
             {% endfor %}
@@ -104,18 +107,6 @@ $("#id_level").click(function () {
             }
     });
     });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
