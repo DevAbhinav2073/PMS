@@ -1,3 +1,4 @@
+import pandas as pd
 from django.shortcuts import get_object_or_404
 
 from apps.authuser.models import StudentProxyModel
@@ -57,6 +58,48 @@ def get_outliers_message(batch, stream, semester):
             incomplete_data_entry.append(message)
     outliers['Incomplete data entry'] = incomplete_data_entry
     return incomplete_data_entry
+
+
+def prepare_pandas_dataframe_from_database(batch, semester, stream):
+    students_names = list(StudentProxyModel.objects.filter(batch=batch, stream=stream).values_list('name', flat=True))
+    subjects = list(
+        ElectiveSubject.objects.filter(elective_for=semester, stream=stream).values_list('subject_name', flat=True))
+
+    df = pd.DataFrame(data={}, index=subjects, columns=students_names)
+    for index in df.index:
+        for column in df.columns:
+            if ElectivePriority.objects.filter(student__name=column, subject__subject_name=index,
+                                               session=semester).exists():
+                df.at[index, column] = ElectivePriority.objects.get(student__name=column, subject__subject_name=index,
+                                                                    session=semester).priority
+            else:
+                raise ValueError("All data are not available in the database.")
+
+    return df
+
+
+def get_normalized_result_from_dataframe(result_df):
+    priority_sum = []
+    for i in range(0, len(result_df.index)):
+        priority_sum.append(sum(result_df.iloc[i]))
+    result_df['number_of_students'] = priority_sum
+    normalized_data_list = []
+    for subject in result_df.index:
+        normalized_data = dict()
+        normalized_data['subject_name'] = subject
+        students = []
+        for student in result_df.columns:
+            if result_df.at[subject, student]:
+                students.append(student)
+        print(students)
+        normalized_data['students'] = StudentProxyModel.objects.filter(name__in=students)
+        student_count = result_df.at[subject, 'number_of_students']
+        normalized_data['student_count'] = student_count
+        normalized_data['student_count_1'] = student_count + 1
+        normalized_data['row_count'] = 1 if student_count == 0 else student_count
+        normalized_data_list.append(normalized_data)
+    print(normalized_data_list)
+    return normalized_data_list
 
 
 def get_student_queryset(batch, stream):

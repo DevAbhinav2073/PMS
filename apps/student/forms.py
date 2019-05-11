@@ -15,6 +15,7 @@ class PriorityForm(forms.ModelForm):
 
 class PriorityFormForFormset(forms.Form):
     student = forms.ModelChoiceField(queryset=StudentProxyModel.objects.all(), required=True)
+    desired_number_of_subjects = forms.IntegerField(required=True)
 
     def __init__(self, *args, **kwargs):
         self.priority_detail_form_data = kwargs.pop('priority_detail_form_data', None)
@@ -81,19 +82,22 @@ class PriorityFormForFormset(forms.Form):
         ElectivePriority.objects.filter(student=self.cleaned_data.get('student'),
                                         session=self.semester).delete()
         student = self.cleaned_data.pop('student', None)
+        desired_number_of_subjects = self.cleaned_data.pop('desired_number_of_subjects', 2)
         if self.enter_from_text:
             priorities = self.cleaned_data.get('priority_text')
             for priority, value in enumerate(priorities.split(' ')):
                 index = int(value) - 1
                 ElectivePriority.objects.create(student=student, session=self.semester,
-                                                subject=get_nth_object(self.subjects, index), priority=priority + 1)
+                                                subject=get_nth_object(self.subjects, index), priority=priority + 1
+                                                , desired_number_of_subjects=desired_number_of_subjects)
         else:
             priorities_list = []
             for key, value in self.cleaned_data.items():
                 priority_int = int(key[9:])  # 9 + 1  letters are 'priority_'
                 priorities_list.append(str(get_object_index(self.subjects, value) + 1))
                 ElectivePriority.objects.create(student=student, session=self.semester,
-                                                subject=value, priority=priority_int)
+                                                subject=value, priority=priority_int,
+                                                desired_number_of_subjects=desired_number_of_subjects)
             priorities = ' '.join(priorities_list)
         ElectivePriority.objects.filter(student=student,
                                         session=self.semester).update(priority_text=priorities)

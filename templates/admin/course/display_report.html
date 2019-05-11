@@ -42,7 +42,7 @@
         {% for student in subject.students %}
         {% if forloop.counter == 1 %}
         <td> {{student.roll_number}}</td>
-        <td> {{student.student_name}}</td>
+        <td> {{student.name}}</td>
         {% endif %}
         {% endfor %}
     </tr>
@@ -50,7 +50,7 @@
     {% if forloop.counter != 1 %}
     <tr>
         <td> {{student.roll_number}}</td>
-        <td> {{student.student_name}}</td>
+        <td> {{student.name}}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -111,6 +111,10 @@ $("#id_level").click(function () {
             }
     });
     });
+
+
+
+
 
 </script>
 

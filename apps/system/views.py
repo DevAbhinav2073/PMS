@@ -2,11 +2,12 @@ from django.contrib import admin
 # Create your views here.
 from django.template.response import TemplateResponse
 
+from apps.algorithm.generic_algorithm import GenericAlgorithm
 from apps.authuser.models import StudentProxyModel
 from apps.course.forms import StreamForm
 from apps.course.models import ElectiveSubject
-from apps.utils import get_suitable_algorithm_class, normalize_result, check_if_the_data_entry_is_complete, \
-    get_outliers_message
+from apps.utils import check_if_the_data_entry_is_complete, \
+    get_outliers_message, prepare_pandas_dataframe_from_database, get_normalized_result_from_dataframe
 
 
 def get_admin_context():
@@ -35,10 +36,15 @@ def display_report(request, *args, **kwargs):
             context['has_data'] = True
             context['is_data_entry_ok'] = is_data_entry_complete
             if is_data_entry_complete:
-                AlgorithClass = get_suitable_algorithm_class(semester.subjects_provided)
-                algorithm = AlgorithClass(student_queryset, semester, list(subjects))
-                algorithm.run()
-                context['result'] = normalize_result(algorithm.get_result())
+                prepare_pandas_dataframe_from_database(batch, semester, stream)
+                algo = GenericAlgorithm(batch, semester, stream)
+                result_as_df = algo.run()
+                normalized_result = get_normalized_result_from_dataframe(result_as_df)
+                # AlgorithClass = get_suitable_algorithm_class(semester.subjects_provided)
+                # algorithm = AlgorithClass(student_queryset, semester, list(subjects))
+                # algorithm.run()
+                # normalized_result = normalize_result(algorithm.get_result())
+                context['result'] = normalized_result
             else:
                 outlier_messages = get_outliers_message(batch, stream, semester)
                 context['outlier_messages'] = outlier_messages
